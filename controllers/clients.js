@@ -4,22 +4,34 @@ const secretKey = "umerFinalYearProject";
 
 
 const clientSignUp = async (req, res) => {
-    
-    let {name, email, password, phone, dob} = req.body;
-      try {
-        let newUser = await Client.create({
-            name,
-            email, 
-            password,
-            phone,
-            dob,
-            role: 'c'
-        });
-        res.status(201).json({success: true, msg: `Sign up Successfull!`});
-      } catch (error) {
-        res.json({success: false, msg: error});
-      }
-}
+  let { name, email, password, phone, dob } = req.body;
+  
+  try {
+      // Logging input data for Vercel logs
+      console.log("Received signup request with data:", { name, email, phone, dob });
+
+      // Creating a new user
+      let newUser = await Client.create({
+          name,
+          email,
+          password,
+          phone,
+          dob,
+          role: 'c'
+      });
+
+      // Log success and return a response
+      console.log("New user created successfully:", newUser);
+      res.status(201).json({ success: true, msg: "Sign up Successful!" });
+  } catch (error) {
+      // Log the error for debugging purposes
+      console.error("Error during client signup:", error);
+
+      // Respond with a failure message
+      res.status(500).json({ success: false, msg: "An error occurred during signup." });
+  }
+};
+
 
 const clientLogin = async (req, res) => {
   let {email, password} = req.body;
